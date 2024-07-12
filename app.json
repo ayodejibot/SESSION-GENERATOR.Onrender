@@ -1,0 +1,22 @@
+{
+    "name": "Dark-Love-MD Session Generator",
+    "description": "Session ID By Dark-Love-MD",
+    "logo": "",
+    "repository": "https://github.com/ayodejibot/session-generator.orender.git",
+    "keywords": ["Dark-Love-MD"],
+    "success_url": "/", 
+    "buildpacks": [{ "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" } ],
+    "env": {      
+      "PORT": {
+        "description": "Port for web app.4000,5000,3000... any!",
+        "value": "5000",
+        "required": false 
+      },
+      "MESSAGE": {
+        "description": "Dark-Love-MD IS CONNECTED SUCESSFULLY",
+        "value": "true",
+        "required": true 
+      }
+    }   
+
+}
