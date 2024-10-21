@@ -1,144 +1,103 @@
-// get qr  code of any bot using this ....................
-//coded  by Dark-Love-MD
-
-
-const express = require("express");
-const app = express();
-
-
-
-
-
-const pino = require("pino");
-let { toBuffer } = require("qrcode");
+const PastebinAPI = require('pastebin-js'),
+pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
+const {makeid} = require('./id');
+const QRCode = require('qrcode');
+const express = require('express');
 const path = require('path');
-const fs = require("fs-extra");
-const { Boom } = require("@hapi/boom");
-const PORT = process.env.PORT ||  5000
-const MESSAGE = process.env.MESSAGE ||  `
-┌───⭓『
-❒ *Dark-Love-MD*
-❒ _NOW DEPLOY IT_
-└────────────⭓
-┌───⭓
-❒  • Chat with owner •
-❒ *GitHub:* __https://github.com/ayodejibot/Dark-Love-MD.git_
-❒ *Author:* _wa.me/2348122441244_
-└────────────⭓
-`
+const fs = require('fs');
+let router = express.Router()
+const pino = require("pino");
+const {
+	default: Wasi_Tech,
+	useMultiFileAuthState,
+	jidNormalizedUser,
+	Browsers,
+	delay,
+	makeInMemoryStore,
+} = require("@whiskeysockets/baileys");
+
+function removeFile(FilePath) {
+	if (!fs.existsSync(FilePath)) return false;
+	fs.rmSync(FilePath, {
+		recursive: true,
+		force: true
+	})
+};
+const {
+	readFile
+} = require("node:fs/promises")
+router.get('/', async (req, res) => {
+	const id = makeid();
+	async function WASI_MD_QR_CODE() {
+		const {
+			state,
+			saveCreds
+		} = await useMultiFileAuthState('./temp/' + id)
+		try {
+			let Qr_Code_By_Wasi_Tech = Wasi_Tech({
+				auth: state,
+				printQRInTerminal: false,
+				logger: pino({
+					level: "silent"
+				}),
+				browser: Browsers.macOS("Desktop"),
+			});
+
+			Qr_Code_By_Wasi_Tech.ev.on('creds.update', saveCreds)
+			Qr_Code_By_Wasi_Tech.ev.on("connection.update", async (s) => {
+				const {
+					connection,
+					lastDisconnect,
+					qr
+				} = s;
+				if (qr) await res.end(await QRCode.toBuffer(qr));
+				if (connection == "open") {
+					await delay(5000);
+					let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
+					await delay(800);
+				   let b64data = Buffer.from(data).toString('base64');
+				   let session = await Qr_Code_By_Wasi_Tech.sendMessage(Qr_Code_By_Wasi_Tech.user.id, { text: '' + b64data });
+	
+				   let WASI_MD_TEXT = `
+┏━━━━━━━━━━━━━━
+┃joel wa bot
+┃is connected 
+┃powered by joel_tech
+┗━━━━━━━━━━━━━━━
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+❶ || 𝐶𝑟𝑒𝑎𝑡𝑜𝑟 = joel-it
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+❷ || WhattsApp Channel = https://whatsapp.com/channel/0029Vade9VgD38CPEnxfYF0M
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+Please Follow My Support Channel
+owner? https://wa.link/i5vjax
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+©*keep using joel md*
+_____________________________________
+	
+_Don't Forget To Give Star To My Repo_`
+	 await Qr_Code_By_Wasi_Tech.sendMessage(Qr_Code_By_Wasi_Tech.user.id,{text:WASI_MD_TEXT},{quoted:session})
 
 
 
-
-
-
-
-
-
-
-
-if (fs.existsSync('./auth_info_baileys')) {
-    fs.emptyDirSync(__dirname + '/auth_info_baileys');
-  };
-  
-  app.use("/", async(req, res) => {
-
-  const { default: WasiWASocket, useMultiFileAuthState, Browsers, delay,DisconnectReason, makeInMemoryStore, } = require("@whiskeysockets/baileys");
-  const store = makeInMemoryStore({ logger: pino().child({ level: 'silent', stream: 'store' }) })
-  async function WASI() {
-    const { state, saveCreds } = await useMultiFileAuthState(__dirname + '/auth_info_baileys')
-    try {
-      let Smd =WasiWASocket({ 
-        printQRInTerminal: false,
-        logger: pino({ level: "silent" }), 
-        browser: [Browsers.Chrome, 'Windows 10', 'Chrome/89.0.4389.82'],
-        auth: state 
-        });
-
-
-      Smd.ev.on("connection.update", async (s) => {
-        const { connection, lastDisconnect, qr } = s;
-        if (qr) { res.end(await toBuffer(qr)); }
-
-
-        if (connection == "open"){
-          await delay(3000);
-          let user = Smd.user.id;
-
-
-//===========================================================================================
-//===============================  SESSION ID    ===========================================
-//===========================================================================================
-
-          let CREDS = fs.readFileSync(__dirname + '/auth_info_baileys/creds.json')
-          var Scan_Id = Buffer.from(CREDS).toString('base64')
-         // res.json({status:true,Scan_Id })
-          console.log(`
-====================  SESSION ID  ==========================                   
-SESSION-ID ==> ${Scan_Id}
--------------------   SESSION CLOSED   -----------------------
-`)
-
-
-          let msgsss = await Smd.sendMessage(user, { text:  Scan_Id });
-          await Smd.sendMessage(user, { text: MESSAGE } , { quoted : msgsss });
-          await delay(1000);
-          try{ await fs.emptyDirSync(__dirname+'/auth_info_baileys'); }catch(e){}
-
-
-        }
-
-        Smd.ev.on('creds.update', saveCreds)
-
-        if (connection === "close") {            
-            let reason = new Boom(lastDisconnect?.error)?.output.statusCode
-            // console.log("Reason : ",DisconnectReason[reason])
-            if (reason === DisconnectReason.connectionClosed) {
-              console.log("Connection closed!")
-             // WASI().catch(err => console.log(err));
-            } else if (reason === DisconnectReason.connectionLost) {
-                console.log("Connection Lost from Server!")
-            //  WASI().catch(err => console.log(err));
-            } else if (reason === DisconnectReason.restartRequired) {
-                console.log("Restart Required, Restarting...")
-              WASI().catch(err => console.log(err));
-            } else if (reason === DisconnectReason.timedOut) {
-                console.log("Connection TimedOut!")
-             // WASI().catch(err => console.log(err));
-            }  else {
-                console.log('Connection closed with bot. Please run again.');
-                console.log(reason)
-              //process.exit(0)
-            }
-          }
-
-
-
-      });
-    } catch (err) {
-        console.log(err);
-       await fs.emptyDirSync(__dirname+'/auth_info_baileys'); 
-    }
-  }
-
-
-
-
-
-
-
-
-  WASI().catch(async(err) => {
-    console.log(err)
-    await fs.emptyDirSync(__dirname+'/auth_info_baileys'); 
-
-
-    //// MADE BY ITXWASI
-
+					await delay(100);
+					await Qr_Code_By_Wasi_Tech.ws.close();
+					return await removeFile("temp/" + id);
+				} else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
+					await delay(10000);
+					WASI_MD_QR_CODE();
+				}
+			});
+		} catch (err) {
+			if (!res.headersSent) {
+				await res.json({
+					code: "Service is Currently Unavailable"
+				});
+			}
+			console.log(err);
+			await removeFile("temp/" + id);
+		}
+	}
+	return await WASI_MD_QR_CODE()
 });
-
-
-  })
-
-
-app.listen(PORT, () => console.log(`App listened on port http://localhost:${PORT}`));
+module.exports = router
