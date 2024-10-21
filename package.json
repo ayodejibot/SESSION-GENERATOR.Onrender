@@ -1,14 +1,14 @@
 {
-    "description": "session id",
+    "description": "dark love bot",
     "main": "./itjoe.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
     },
     "scripts": {
-    "start": "node itxxwasi.js"
+    "start": "node itjoe.js"
   },
-  "author": "joel Tech",
+  "author": "WasiTech",
   "license": "GPL-3.0 license",
   "dependencies": {
     "@whiskeysockets/baileys": "^6.5.0",
