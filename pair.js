@@ -57,21 +57,8 @@ router.get('/', async (req, res) => {
                let session = await Pair_Code_By_Gifted_Tech.sendMessage(Pair_Code_By_Gifted_Tech.user.id, { text: '' + b64data });
 
                let GIFTED_MD_TEXT = `
-┏━━━━━━━━━━━━━━
-┃ LEONARD MD
-┃ CONNECTED
-┗━━━━━━━━━━━━━━━
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬
- DEVELOPERERS
-  Leonardtech https://wa.link/dfa6wg
-  LOrd JOel   https://wa.link/i5vjax
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-wa Channel = https://whatsapp.com/channel/0029VakLfckBlHpYVxryFJ14
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-Wa group 1https://chat.whatsapp.com/J54tT9uXXO81QLARCr7qQK
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
-Don't Forget To Give Star To My Repo`
+session id by dark love tech`
  await Pair_Code_By_Gifted_Tech.sendMessage(Pair_Code_By_Gifted_Tech.user.id,{text:GIFTED_MD_TEXT},{quoted:session})
  
 
