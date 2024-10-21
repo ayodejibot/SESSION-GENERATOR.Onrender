@@ -1,9 +1,9 @@
 {
-    "name": "Dark-Love-MD Session Generator",
-    "description": "Session ID By Dark-Love-MD",
+    "name": "dark love md",
+    "description": "I'm Web Session Generator",
     "logo": "",
-    "repository": "https://github.com/ayodejibot/session-generator.orender.git",
-    "keywords": ["Dark-Love-MD"],
+    "repository": "https://github.com/Giftedmaurice/giftedmdV2-session-generator",
+    "keywords": ["@Xcelsama"],
     "success_url": "/", 
     "buildpacks": [{ "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" } ],
     "env": {      
@@ -13,9 +13,9 @@
         "required": false 
       },
       "MESSAGE": {
-        "description": "Dark-Love-MD IS CONNECTED SUCESSFULLY",
-        "value": "true",
-        "required": true 
+        "description": "",
+        "value": "",
+        "required": false 
       }
     }   
 
